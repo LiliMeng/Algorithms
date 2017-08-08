@@ -4,29 +4,23 @@ class Solution(object):
         :type nums: List[int]
         :rtype: List[List[int]]
         """
-       
-        res=[]
-        my_dict={}   
-        
-        for i in range(len(nums)):
-          for j in range(len(nums)):
-              if (-nums[i]-nums[j]) in nums:
-                  k=nums.index(-nums[i]-nums[j])
-                  my_dict[nums[i]+nums[j]]=-nums[i]-nums[j]
-                  if(i!=j and i!=k and j!=k):
-                      single_res=[]
-                      single_res.append(nums[i])
-                      single_res.append(nums[j])
-                      single_res.append(-nums[i]-nums[j])
-                      single_res.sort()
-                      res.append(single_res)
-                      
-              
-    
-        return list(set(map(tuple,res)))
-    
-s=Solution()
-nums=[-1, 0, 1, 2, -1, -4]
-res=s.threeSum(nums)
-print(len(res))
-print(res)
+        n = len(nums)
+        nums.sort()
+        ans = []
+        for i in range(n):
+            if i > 0 and nums[i] == nums[i - 1]: continue
+            L, R = i + 1, n - 1
+            while L < R:
+                temp = nums[i] + nums[L] + nums[R]
+                if temp == 0:
+                    ans.append([nums[i], nums[L], nums[R]])
+                    L += 1
+                    R -= 1
+                    while L < R and nums[L] == nums[L - 1]: L += 1
+                    while R > L and nums[R] == nums[R + 1]: R -= 1
+                elif temp > 0:
+                    R -= 1
+                else:
+                    L += 1
+        return ans
+
